@@ -42,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/option_absent"
                     android:layout_marginTop="80dp"
+                    android:tag="4"
                     android:checked="true"/>
 
                 <RadioButton
@@ -49,6 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_changed_address"
+                    android:tag="5"
                     android:layout_marginTop="10dp"/>
 
                 <RadioButton
@@ -56,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_incorrect_address"
+                    android:tag="6"
                     android:layout_marginTop="10dp"/>
 
             </RadioGroup>

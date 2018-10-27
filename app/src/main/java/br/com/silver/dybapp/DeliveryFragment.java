@@ -6,16 +6,20 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,8 +43,14 @@ public class DeliveryFragment extends Fragment {
     @BindView(R.id.cardNotDelivered)
     CardView cardNotDelivered;
 
+    @BindView(R.id.tgDelivery)
+    ToggleButton tgDelivery;
+
     @BindView(R.id.rgDelivered)
     RadioGroup rgDelivered;
+
+    @BindView(R.id.rgNotDelivered)
+    RadioGroup rgNotDelivered;
 
     private Double lat, lng;
 
@@ -111,8 +121,8 @@ public class DeliveryFragment extends Fragment {
 
     @OnClick({R.id.btnDeliveredOk, R.id.btnNotDeliveredOk})
     public void setDelivery(View v) {
+
         String code = getArguments().getString("code", null);
-        int status = v.getId() == R.id.btnDeliveredOk ? 1 : 0;
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -120,7 +130,7 @@ public class DeliveryFragment extends Fragment {
         delivery.setCode(code);
         delivery.setLat(String.valueOf(this.lat));
         delivery.setLng(String.valueOf(this.lng));
-        delivery.setStatus(status);
+        delivery.setStatus(getStatus(v.getId()));
         delivery.setStatusDetail(getStatusDetail());
         delivery.setDate(sdf.format(currentTime));
 
@@ -138,7 +148,7 @@ public class DeliveryFragment extends Fragment {
         }
         counter();
         cancel();
-        showMessage("Cadastro realizado com sucesso");
+        showMessage(getResources().getString(R.string.message_success));
     }
 
     public void counter() {
@@ -175,16 +185,29 @@ public class DeliveryFragment extends Fragment {
     }
 
     public void showMessage(CharSequence text ) {
-        Context context = getActivity().getApplicationContext();
+        Context context = getContext();
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
 
+    public int getStatus(int id) {
+        int status = id == R.id.btnDeliveredOk ? 0 : 1;
+        return status;
+    }
+
     public int getStatusDetail() {
-        int sel = rgDelivered.getCheckedRadioButtonId();
-        return sel;
+        RadioButton radioButton;
+
+        if(tgDelivery.isChecked()) {
+            radioButton = getActivity().findViewById(rgDelivered.getCheckedRadioButtonId());
+
+        } else {
+            radioButton = getActivity().findViewById(rgNotDelivered.getCheckedRadioButtonId());
+        }
+
+        return Integer.parseInt(radioButton.getTag().toString());
 
     }
 
