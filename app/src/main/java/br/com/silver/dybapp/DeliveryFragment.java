@@ -50,11 +50,13 @@ public class DeliveryFragment extends Fragment {
     }
 
     public static DeliveryFragment newInstance(String code) {
-        DeliveryFragment scf = new DeliveryFragment();
+        DeliveryFragment fragment = new DeliveryFragment();
+
         Bundle args = new Bundle();
         args.putString("code", code);
-        scf.setArguments(args);
-        return scf;
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
@@ -97,7 +99,6 @@ public class DeliveryFragment extends Fragment {
         }
     }
 
-    //@OnClick({R.id.btnDelivered, R.id.btnNotDelivered})
     @OnClick(R.id.tgDelivery)
     public void showCard(View v) {
         cardDelivered.setVisibility(

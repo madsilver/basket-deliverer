@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import br.com.silver.dybapp.domain.Delivery;
 import br.com.silver.dybapp.domain.DeliveryAdapter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -23,11 +25,12 @@ import io.realm.Sort;
  */
 public class HistoryFragment extends Fragment {
 
+    @BindView(R.id.lvHistory)
     ListView listView;
+
     DeliveryAdapter adapter;
 
     public HistoryFragment() {
-        // Required empty public constructor
     }
 
     public static HistoryFragment newInstance() {
@@ -40,8 +43,7 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);
-        //listView = new ListView(getContext());
-        listView = view.findViewById(R.id.lvHistory);
+        ButterKnife.bind(this, view);
 
         Realm realm = Realm.getDefaultInstance();
         RealmResults<Delivery> results = realm.where(Delivery.class)

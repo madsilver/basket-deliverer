@@ -31,7 +31,6 @@ public class HomeFragment extends Fragment {
     FitChart fitChart;
 
     public HomeFragment() {
-
     }
 
     @Override

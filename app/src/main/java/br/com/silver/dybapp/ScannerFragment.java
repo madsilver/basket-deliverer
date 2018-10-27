@@ -22,20 +22,26 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ScannerFragment extends Fragment {
 
+    @BindView(R.id.surfaceView)
     SurfaceView surfaceView;
+
+    @BindView(R.id.txtBarcodeValue)
     TextView txtBarcodeValue;
+
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
 
     public ScannerFragment() {
-        // Required empty public constructor
     }
 
     public static ScannerFragment newInstance() {
@@ -47,15 +53,15 @@ public class ScannerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_scanner, container, false);
+        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        surfaceView =  getView().findViewById(R.id.surfaceView);
-        txtBarcodeValue = getView().findViewById(R.id.txtBarcodeValue);
-
         initDetector();
     }
 
