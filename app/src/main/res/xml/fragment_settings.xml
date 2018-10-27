@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+<EditTextPreference
+    android:title="@string/title_scheduled_deliveries"
+    android:key="@string/pref_scheduled"
+    android:summary="@string/summary_scheduled"
+    android:defaultValue="100"
+    android:inputType="text"
+    android:singleLine="true"/>
+
+</PreferenceScreen>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <com.txusballesteros.widgets.FitChart
+        style="@style/chart_style"
+        android:layout_gravity="center"
+        android:id="@+id/fitChart"
+        android:layout_marginBottom="30dp"
+        app:strokeSize="10dp"
+        app:valueStrokeColor="@color/donut"
+        app:animationMode="overdraw" />
+
+    <TextView
+        android:id="@+id/delivery_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="80sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="50dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/count_delivered"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/btnReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="80dp"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</FrameLayout>
