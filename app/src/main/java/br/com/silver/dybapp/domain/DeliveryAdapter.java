@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -43,13 +44,19 @@ public class DeliveryAdapter extends BaseAdapter {
         View line = LayoutInflater.from(ctx).inflate(R.layout.item_delivery, null);
         TextView tvCode = line.findViewById(R.id.tvCodeDelivery);
         TextView tvDate = line.findViewById(R.id.tvDateDelivery);
-        TextView tvStatus = line.findViewById(R.id.tvStatusDelivery);
+        ImageView imgStatus = line.findViewById(R.id.img_delivery_status);
+        ImageView imgSync = line.findViewById(R.id.img_sync);
 
-        String status = delivery.getSync() == 0 ? "Entregue" : "Ocorrência";
+        if(delivery.getStatus() == 1 ) {
+            imgStatus.setColorFilter(line.getResources().getColor(R.color.colorAccent));
+        }
+
+        if(delivery.getSync() == 0) {
+            imgSync.setVisibility(View.VISIBLE);
+        }
 
         tvCode.setText(delivery.getCode());
         tvDate.setText(delivery.getDate());
-        tvStatus.setText(status);
 
         return line;
     }

@@ -208,7 +208,6 @@ public class DeliveryFragment extends Fragment {
         }
 
         return Integer.parseInt(radioButton.getTag().toString());
-
     }
 
 
