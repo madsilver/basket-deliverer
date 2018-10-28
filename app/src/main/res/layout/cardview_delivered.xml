@@ -36,7 +36,7 @@
                 android:orientation="vertical">
 
                 <RadioButton
-                    android:id="@+id/optionMain"
+                    android:id="@+id/rb2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_main"
@@ -45,7 +45,7 @@
                     android:checked="true"/>
 
                 <RadioButton
-                    android:id="@+id/optionAlternative"
+                    android:id="@+id/rb3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_alternative"

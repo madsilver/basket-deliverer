@@ -193,7 +193,9 @@ public class DeliveryFragment extends Fragment {
     }
 
     public int getStatus(int id) {
-        int status = id == R.id.btnDeliveredOk ? 0 : 1;
+        int status = id == R.id.btnDeliveredOk ?
+                Delivery.DELEVIRED :
+                Delivery.OCCURRENCE;
         return status;
     }
 
@@ -202,7 +204,6 @@ public class DeliveryFragment extends Fragment {
 
         if(tgDelivery.isChecked()) {
             radioButton = getActivity().findViewById(rgDelivered.getCheckedRadioButtonId());
-
         } else {
             radioButton = getActivity().findViewById(rgNotDelivered.getCheckedRadioButtonId());
         }

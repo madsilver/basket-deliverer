@@ -9,4 +9,12 @@
     android:inputType="text"
     android:singleLine="true"/>
 
+
+<EditTextPreference
+    android:title="@string/title_url"
+    android:key="@string/pref_url"
+    android:summary="@string/summary_url"
+    android:inputType="text"
+    android:singleLine="true"/>
+
 </PreferenceScreen>

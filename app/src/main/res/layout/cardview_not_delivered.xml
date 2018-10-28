@@ -37,7 +37,7 @@
                 android:orientation="vertical">
 
                 <RadioButton
-                    android:id="@+id/rb2"
+                    android:id="@+id/rb4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_absent"
@@ -46,7 +46,7 @@
                     android:checked="true"/>
 
                 <RadioButton
-                    android:id="@+id/rb3"
+                    android:id="@+id/rb5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_changed_address"
@@ -54,7 +54,7 @@
                     android:layout_marginTop="10dp"/>
 
                 <RadioButton
-                    android:id="@+id/rb4"
+                    android:id="@+id/rb6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/option_incorrect_address"

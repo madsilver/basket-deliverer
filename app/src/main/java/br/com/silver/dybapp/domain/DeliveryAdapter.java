@@ -1,6 +1,9 @@
 package br.com.silver.dybapp.domain;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +50,12 @@ public class DeliveryAdapter extends BaseAdapter {
         ImageView imgStatus = line.findViewById(R.id.img_delivery_status);
         ImageView imgSync = line.findViewById(R.id.img_sync);
 
-        if(delivery.getStatus() == 1 ) {
-            imgStatus.setColorFilter(line.getResources().getColor(R.color.colorAccent));
+        if(delivery.getStatus() == Delivery.OCCURRENCE ) {
+            ImageViewCompat.setImageTintList(imgStatus, ContextCompat.getColorStateList(line.getContext(), R.color.colorAccent));
         }
 
-        if(delivery.getSync() == 0) {
-            imgSync.setVisibility(View.VISIBLE);
+        if(delivery.getSync() == Delivery.NOT_SYNCED) {
+            ImageViewCompat.setImageTintList(imgSync, ContextCompat.getColorStateList(line.getContext(), R.color.colorAccent));
         }
 
         tvCode.setText(delivery.getCode());
