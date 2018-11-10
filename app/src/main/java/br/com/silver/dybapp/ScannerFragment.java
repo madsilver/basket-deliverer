@@ -4,6 +4,7 @@ package br.com.silver.dybapp;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -50,7 +51,7 @@ public class ScannerFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_scanner, container, false);
@@ -117,10 +118,10 @@ public class ScannerFragment extends Fragment {
                     txtBarcodeValue.post(new Runnable() {
                          @Override
                          public void run() {
-                             String v = barcodes.valueAt(0).displayValue;
-                             txtBarcodeValue.setText(v);
+                             String code = barcodes.valueAt(0).displayValue;
+                             txtBarcodeValue.setText(code);
 
-                             Fragment f = DeliveryFragment.newInstance(v);
+                             Fragment f = DeliveryFragment.newInstance(code);
                              FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                              transaction.replace(R.id.container, f);
                              transaction.addToBackStack(null);

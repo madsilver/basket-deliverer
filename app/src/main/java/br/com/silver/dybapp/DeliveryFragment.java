@@ -26,6 +26,7 @@ import java.util.Date;
 
 import br.com.silver.dybapp.domain.Counter;
 import br.com.silver.dybapp.domain.Delivery;
+import br.com.silver.dybapp.utils.WebClient;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -135,20 +136,23 @@ public class DeliveryFragment extends Fragment {
         delivery.setDate(sdf.format(currentTime));
 
         saveDelivery(delivery);
+
+        sendServer(delivery);
+
+        counter();
+        showHistory();
+        showMessage(getResources().getString(R.string.message_success));
     }
 
-    public void saveDelivery(Delivery d) {
+    public void saveDelivery(Delivery delivery) {
         Realm realm = Realm.getDefaultInstance();
         try {
             realm.beginTransaction();
-            realm.copyToRealm(d);
+            realm.copyToRealm(delivery);
             realm.commitTransaction();
         } finally {
             realm.close();
         }
-        counter();
-        cancel();
-        showMessage(getResources().getString(R.string.message_success));
     }
 
     public void counter() {
@@ -173,8 +177,8 @@ public class DeliveryFragment extends Fragment {
 
     @OnClick({R.id.btnDeliveredCancel, R.id.btnNotDeliveredCancel})
     public void cancel() {
-        Fragment scannerFragment = ScannerFragment.newInstance();
-        openFragment(scannerFragment);
+        Fragment fragment = ScannerFragment.newInstance();
+        openFragment(fragment);
     }
 
     private void openFragment(Fragment fragment) {
@@ -190,6 +194,11 @@ public class DeliveryFragment extends Fragment {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
+
+    public void showHistory() {
+        Fragment fragment = HistoryFragment.newInstance();
+        openFragment(fragment);
     }
 
     public int getStatus(int id) {
@@ -209,6 +218,17 @@ public class DeliveryFragment extends Fragment {
         }
 
         return Integer.parseInt(radioButton.getTag().toString());
+    }
+
+    public void sendServer(Delivery delivery) {
+        WebClient client = new WebClient(getContext());
+        String resp = client.post(delivery);
+
+        if(resp == "") {
+            delivery.setSync(Delivery.SYNCED);
+            saveDelivery(delivery);
+        }
+
     }
 
 

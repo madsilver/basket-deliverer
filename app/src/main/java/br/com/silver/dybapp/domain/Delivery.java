@@ -86,7 +86,7 @@ public class Delivery extends RealmObject {
 
     @Override
     public String toString() {
-        String s = "{" +
+        return "{" +
                 "code:" + getCode() +
                 ",date:" + getDate() +
                 ",status:" + getStatus() +
@@ -94,7 +94,6 @@ public class Delivery extends RealmObject {
                 ",lat:" + getLat() +
                 ",lng:" + getLng() +
                 "}";
-        return s;
     }
 
     public String toJson() {

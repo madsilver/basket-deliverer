@@ -26,7 +26,7 @@ public class WebClient {
         client = new OkHttpClient();
     }
 
-    String post(Delivery delivery) {
+    public String post(Delivery delivery) {
         RequestBody body = RequestBody.create(JSON, delivery.toJson());
         Request request = new Request.Builder()
                 .url(url)
@@ -38,8 +38,6 @@ public class WebClient {
             return response.body().string();
         } catch(Exception e) {
             return e.getMessage();
-        } finally {
-
         }
 
     }

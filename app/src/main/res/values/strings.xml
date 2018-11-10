@@ -28,11 +28,11 @@
     <string name="summary_url">Endereço do servidor</string>
 
     <!-- cards -->
-    <string name="title_card_delivered">Item entregue no endereço</string>
-    <string name="option_main">Principal</string>
-    <string name="option_alternative">Alternativo</string>
+    <string name="title_card_delivered">Item entregue</string>
+    <string name="option_main">Endereço principal</string>
+    <string name="option_alternative">Endereço alternativo</string>
 
-    <string name="title_card_cause">Motivo</string>
+    <string name="title_card_cause">Item não entregue</string>
     <string name="option_absent">Ausente na data</string>
     <string name="option_changed_address">Mudou de endereço</string>
     <string name="option_incorrect_address">Endereço incorreto</string>
