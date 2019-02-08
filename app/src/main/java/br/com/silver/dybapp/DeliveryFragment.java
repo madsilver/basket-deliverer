@@ -137,11 +137,9 @@ public class DeliveryFragment extends Fragment {
 
         saveDelivery(delivery);
 
-        sendServer(delivery);
-
         counter();
-        showHistory();
-        showMessage(getResources().getString(R.string.message_success));
+
+        sendServer(delivery);
     }
 
     public void saveDelivery(Delivery delivery) {
@@ -227,8 +225,14 @@ public class DeliveryFragment extends Fragment {
         if(resp == "") {
             delivery.setSync(Delivery.SYNCED);
             saveDelivery(delivery);
+
+            showMessage(getResources().getString(R.string.message_success));
+        }
+        else {
+            showMessage(resp);
         }
 
+        showHistory();
     }
 
 

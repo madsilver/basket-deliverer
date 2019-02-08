@@ -2,6 +2,7 @@ package br.com.silver.dybapp;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,12 +10,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -23,8 +26,10 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import br.com.silver.dybapp.domain.Delivery;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 
 /**
@@ -121,6 +126,11 @@ public class ScannerFragment extends Fragment {
                              String code = barcodes.valueAt(0).displayValue;
                              txtBarcodeValue.setText(code);
 
+                             if(validateCode(code)) {
+                                 showMessage("Ops, este código já foi processado");
+                                 return;
+                             }
+
                              Fragment f = DeliveryFragment.newInstance(code);
                              FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                              transaction.replace(R.id.container, f);
@@ -133,6 +143,22 @@ public class ScannerFragment extends Fragment {
             }
         });
 
+    }
+
+    private boolean validateCode(String code) {
+        Realm realm = Realm.getDefaultInstance();
+        Delivery delivery = realm.where(Delivery.class).equalTo("code", code).findFirst();
+
+        return (delivery != null);
+    }
+
+    private void showMessage(CharSequence text ) {
+        Context context = getContext();
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
     }
 
 }

@@ -27,6 +27,10 @@ public class WebClient {
     }
 
     public String post(Delivery delivery) {
+        if(url == "") {
+            return "Configure o endereço do servidor";
+        }
+
         RequestBody body = RequestBody.create(JSON, delivery.toJson());
         Request request = new Request.Builder()
                 .url(url)
@@ -36,7 +40,8 @@ public class WebClient {
         try {
             Response response = client.newCall(request).execute();
             return response.body().string();
-        } catch(Exception e) {
+        }
+        catch(Exception e) {
             return e.getMessage();
         }
 

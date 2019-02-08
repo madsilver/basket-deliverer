@@ -6,21 +6,23 @@
     tools:context=".DeliveryFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
-        android:layout_marginTop="@dimen/text_margin">
+        android:layout_marginTop="@dimen/text_margin"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:text="@string/select_status" />
+            android:text="@string/select_status"
+            android:layout_marginBottom="@dimen/text_margin"/>
 
         <ToggleButton
             android:id="@+id/tgDelivery"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textOn="@string/delivered"
             android:textOff="@string/occurrence"
