@@ -48,6 +48,7 @@ public class ScannerFragment extends Fragment {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
 
     public ScannerFragment() {
+        
     }
 
     public static ScannerFragment newInstance() {

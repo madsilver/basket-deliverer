@@ -6,13 +6,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.IntDef;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -44,9 +47,6 @@ public class DeliveryFragment extends Fragment {
     @BindView(R.id.cardNotDelivered)
     CardView cardNotDelivered;
 
-    @BindView(R.id.tgDelivery)
-    ToggleButton tgDelivery;
-
     @BindView(R.id.rgDelivered)
     RadioGroup rgDelivered;
 
@@ -54,6 +54,8 @@ public class DeliveryFragment extends Fragment {
     RadioGroup rgNotDelivered;
 
     private Double lat, lng;
+
+    private boolean statusDelivery;
 
     public DeliveryFragment() {
         this.lat = 0.0;
@@ -82,7 +84,15 @@ public class DeliveryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delivery, container, false);
         ButterKnife.bind(this, view);
+
+        setStrictMode();
+
         return view;
+    }
+
+    private void setStrictMode() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
     private void getGPS() {
@@ -110,19 +120,22 @@ public class DeliveryFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.tgDelivery)
-    public void showCard(View v) {
-        cardDelivered.setVisibility(
-                ((ToggleButton) v).isChecked() ? View.VISIBLE : View.INVISIBLE
-        );
-        cardNotDelivered.setVisibility(
-                ((ToggleButton) v).isChecked()? View.INVISIBLE : View.VISIBLE
-        );
+    @OnClick({R.id.btnSuccess})
+    public void showCardDelivered(View v) {
+        statusDelivery = true;
+        cardDelivered.setVisibility(View.VISIBLE);
+        cardNotDelivered.setVisibility(View.INVISIBLE);
+    }
+
+    @OnClick({R.id.btnFail})
+    public void showCardOccurrence(View v) {
+        statusDelivery = false;
+        cardDelivered.setVisibility(View.INVISIBLE);
+        cardNotDelivered.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.btnDeliveredOk, R.id.btnNotDeliveredOk})
     public void setDelivery(View v) {
-
         String code = getArguments().getString("code", null);
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -134,8 +147,6 @@ public class DeliveryFragment extends Fragment {
         delivery.setStatus(getStatus(v.getId()));
         delivery.setStatusDetail(getStatusDetail());
         delivery.setDate(sdf.format(currentTime));
-
-        saveDelivery(delivery);
 
         counter();
 
@@ -194,8 +205,11 @@ public class DeliveryFragment extends Fragment {
         toast.show();
     }
 
-    public void showHistory() {
-        Fragment fragment = HistoryFragment.newInstance();
+    public void Done() {
+        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_home);
+
+        Fragment fragment = ScannerFragment.newInstance();
         openFragment(fragment);
     }
 
@@ -209,7 +223,7 @@ public class DeliveryFragment extends Fragment {
     public int getStatusDetail() {
         RadioButton radioButton;
 
-        if(tgDelivery.isChecked()) {
+        if(statusDelivery) {
             radioButton = getActivity().findViewById(rgDelivered.getCheckedRadioButtonId());
         } else {
             radioButton = getActivity().findViewById(rgNotDelivered.getCheckedRadioButtonId());
@@ -222,17 +236,17 @@ public class DeliveryFragment extends Fragment {
         WebClient client = new WebClient(getContext());
         String resp = client.post(delivery);
 
-        if(resp == "") {
+        if(resp == "" || resp == null) {
             delivery.setSync(Delivery.SYNCED);
             saveDelivery(delivery);
-
             showMessage(getResources().getString(R.string.message_success));
         }
         else {
+            saveDelivery(delivery);
             showMessage(resp);
         }
 
-        showHistory();
+        Done();
     }
 
 

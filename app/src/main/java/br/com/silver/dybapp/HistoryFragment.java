@@ -4,6 +4,7 @@ package br.com.silver.dybapp;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import br.com.silver.dybapp.domain.Delivery;
 import br.com.silver.dybapp.domain.DeliveryAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -45,13 +47,7 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         ButterKnife.bind(this, view);
 
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<Delivery> results = realm.where(Delivery.class)
-                .sort("date", Sort.DESCENDING)
-                .findAll();
-
-        adapter = new DeliveryAdapter(getContext(), results);
-        listView.setAdapter(adapter);
+        showList();
 
         return view;
     }
@@ -59,8 +55,40 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
 
+    private void showList() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<Delivery> results = realm.where(Delivery.class)
+                .sort("date", Sort.DESCENDING)
+                .findAll();
 
+        adapter = new DeliveryAdapter(getContext(), results);
+        listView.setAdapter(adapter);
+    }
+
+    @OnClick({R.id.btnResetHistory})
+    public void resetHistory(View v) {
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.beginTransaction();
+
+            RealmResults<Delivery> results = realm.where(Delivery.class)
+                .equalTo("sync", Delivery.SYNCED)
+                .findAll();
+
+            if(results.size() > 0) {
+                results.deleteAllFromRealm();
+                showList();
+            }
+
+            realm.commitTransaction();
+        }
+        catch(Exception e) {
+            Log.d("ERROR", e.getMessage());
+        } finally {
+            realm.close();
+        }
     }
 
 }

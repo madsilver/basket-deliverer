@@ -8,5 +8,6 @@
     <dimen name="chart_size">250dp</dimen>
     <dimen name="stroke_size">18dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="card_margin_top">180dp</dimen>
+    <dimen name="card_margin_top">100dp</dimen>
+    <dimen name="margin_soft">4dp</dimen>
 </resources>

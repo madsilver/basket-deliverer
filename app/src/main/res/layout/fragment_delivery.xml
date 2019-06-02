@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".DeliveryFragment">
 
     <LinearLayout
@@ -10,23 +11,33 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
         android:layout_marginTop="@dimen/text_margin"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
-        <TextView
+        <Button
+            android:id="@+id/btnSuccess"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_status"
-            android:layout_marginBottom="@dimen/text_margin"/>
+            android:layout_weight="1"
+            android:text="@string/delivered"
+            android:textColor="@color/textScan"
+            android:layout_marginEnd="@dimen/margin_soft"
+            android:layout_marginRight="@dimen/margin_soft"
+            android:background="@color/colorSuccess"/>
 
-        <ToggleButton
-            android:id="@+id/tgDelivery"
+        <Button
+            android:id="@+id/btnFail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textOn="@string/delivered"
-            android:textOff="@string/occurrence"
-            android:checked="true"/>
+            android:layout_weight="1"
+            android:text="@string/occurrence"
+            android:textColor="@color/textScan"
+            android:layout_marginStart="@dimen/margin_soft"
+            android:layout_marginLeft="@dimen/margin_soft"
+            android:background="@color/colorAccent"/>
+
+
 
     </LinearLayout>
 

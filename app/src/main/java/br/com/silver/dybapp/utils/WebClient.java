@@ -4,6 +4,7 @@ package br.com.silver.dybapp.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import br.com.silver.dybapp.R;
 import br.com.silver.dybapp.domain.Delivery;
@@ -42,6 +43,7 @@ public class WebClient {
             return response.body().string();
         }
         catch(Exception e) {
+            Log.d("ERROR", e.getMessage());
             return e.getMessage();
         }
 

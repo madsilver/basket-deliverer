@@ -3,13 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".HistoryFragment">
 
-    <ListView
-        android:id="@+id/lvHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"/>
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <ListView
+           android:id="@+id/lvHistory"
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:layout_marginBottom="180dp"/>
+
+       <Button
+           android:id="@+id/btnResetHistory"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/reset_sended"
+           android:textColor="@color/textScan"
+           android:layout_alignParentBottom="true"
+           android:layout_marginBottom="110dp"
+           style="?android:attr/borderlessButtonStyle"/>
+
+       <Button
+           android:id="@+id/btnResend"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/resend"
+           android:textColor="@color/textScan"
+           android:layout_alignParentBottom="true"
+           android:layout_marginBottom="60dp"
+           style="?android:attr/borderlessButtonStyle"/>
+
+   </RelativeLayout>
 
 
 </FrameLayout>
