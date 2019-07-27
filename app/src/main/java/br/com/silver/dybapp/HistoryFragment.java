@@ -1,6 +1,7 @@
 package br.com.silver.dybapp;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -9,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import br.com.silver.dybapp.domain.Delivery;
 import br.com.silver.dybapp.domain.DeliveryAdapter;
+import br.com.silver.dybapp.utils.WebClient;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -69,13 +73,61 @@ public class HistoryFragment extends Fragment {
 
     @OnClick({R.id.btnResetHistory})
     public void resetHistory(View v) {
+        makeReset();
+    }
+
+    @OnClick({R.id.btnResend})
+    public void resend(View v) {
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            RealmResults<Delivery> results = realm.where(Delivery.class)
+                    .equalTo("sync", Delivery.NOT_SYNCED)
+                    .findAll();
+
+            if(results.size() == 0) {
+                showMessage("Nenhum envio pendente");
+                return;
+            }
+
+            ArrayList<String> list = new ArrayList<>();
+
+            for(final Delivery delivery: results) {
+                list.add(delivery.toString());
+            }
+
+            WebClient client = new WebClient(getContext());
+            String resp = client.postAll(list);
+
+            if(resp.equals("")) {
+                for(final Delivery delivery: results) {
+                    realm.beginTransaction();
+                    delivery.setSync(Delivery.SYNCED);
+                    realm.copyToRealm(delivery);
+                    realm.commitTransaction();
+                }
+
+                resp = getResources().getString(R.string.message_success_resend);
+            }
+
+            showMessage(resp);
+        }
+        catch(Exception e) {
+            showMessage("Failure: " + e.getMessage());
+        } finally {
+            realm.close();
+        }
+
+        showList();
+    }
+
+    public void makeReset() {
         Realm realm = Realm.getDefaultInstance();
         try {
             realm.beginTransaction();
 
             RealmResults<Delivery> results = realm.where(Delivery.class)
-                .equalTo("sync", Delivery.SYNCED)
-                .findAll();
+                    .equalTo("sync", Delivery.SYNCED)
+                    .findAll();
 
             if(results.size() > 0) {
                 results.deleteAllFromRealm();
@@ -89,6 +141,14 @@ public class HistoryFragment extends Fragment {
         } finally {
             realm.close();
         }
+    }
+
+    public void showMessage(CharSequence text ) {
+        Context context = getContext();
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
 }

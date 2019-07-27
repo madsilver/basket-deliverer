@@ -13,7 +13,7 @@
         android:id="@+id/fitChart"
         android:layout_marginBottom="30dp"
         app:strokeSize="20dp"
-        app:valueStrokeColor="@color/donut"
+        app:valueStrokeColor="@color/colorAccent"
         app:animationMode="overdraw" />
 
     <TextView

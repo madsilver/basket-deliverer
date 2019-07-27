@@ -41,8 +41,10 @@
 
     </LinearLayout>
 
+    <include layout="@layout/cardview_not_delivered" />
+
     <include layout="@layout/cardview_delivered" />
 
-    <include layout="@layout/cardview_not_delivered" />
+
 
 </FrameLayout>

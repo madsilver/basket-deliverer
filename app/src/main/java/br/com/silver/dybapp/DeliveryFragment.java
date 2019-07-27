@@ -76,6 +76,9 @@ public class DeliveryFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        cardDelivered.setVisibility(View.INVISIBLE);
+        cardNotDelivered.setVisibility(View.INVISIBLE);
+
         getGPS();
     }
 
@@ -144,24 +147,13 @@ public class DeliveryFragment extends Fragment {
         delivery.setCode(code);
         delivery.setLat(String.valueOf(this.lat));
         delivery.setLng(String.valueOf(this.lng));
-        delivery.setStatus(getStatus(v.getId()));
+        delivery.setStatus(getStatusDelivery(v.getId()));
         delivery.setStatusDetail(getStatusDetail());
         delivery.setDate(sdf.format(currentTime));
 
         counter();
 
         sendServer(delivery);
-    }
-
-    public void saveDelivery(Delivery delivery) {
-        Realm realm = Realm.getDefaultInstance();
-        try {
-            realm.beginTransaction();
-            realm.copyToRealm(delivery);
-            realm.commitTransaction();
-        } finally {
-            realm.close();
-        }
     }
 
     public void counter() {
@@ -205,15 +197,7 @@ public class DeliveryFragment extends Fragment {
         toast.show();
     }
 
-    public void Done() {
-        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.navigation_home);
-
-        Fragment fragment = ScannerFragment.newInstance();
-        openFragment(fragment);
-    }
-
-    public int getStatus(int id) {
+    public int getStatusDelivery(int id) {
         int status = id == R.id.btnDeliveredOk ?
                 Delivery.DELEVIRED :
                 Delivery.OCCURRENCE;
@@ -236,18 +220,34 @@ public class DeliveryFragment extends Fragment {
         WebClient client = new WebClient(getContext());
         String resp = client.post(delivery);
 
-        if(resp == "" || resp == null) {
+        if(resp.equals("")) {
             delivery.setSync(Delivery.SYNCED);
-            saveDelivery(delivery);
-            showMessage(getResources().getString(R.string.message_success));
-        }
-        else {
-            saveDelivery(delivery);
-            showMessage(resp);
+            resp = getResources().getString(R.string.message_success);
         }
 
-        Done();
+        showMessage(resp);
+
+        saveDelivery(delivery);
+
+        redirectHistoryFragment();
     }
 
+    public void saveDelivery(Delivery delivery) {
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.beginTransaction();
+            realm.copyToRealm(delivery);
+            realm.commitTransaction();
+        } finally {
+            realm.close();
+        }
+    }
 
+    public void redirectHistoryFragment() {
+        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_history);
+
+        Fragment fragment = HistoryFragment.newInstance();
+        openFragment(fragment);
+    }
 }

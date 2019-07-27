@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Basket Deliverer</string>
+    <string name="app_name">Basket Deliverer v1.1</string>
     <string name="title_home">Home</string>
     <string name="title_scanner">Scanner</string>
     <string name="title_history">History</string>
@@ -19,6 +19,7 @@
     <string name="select_status">Informe o status da entrega</string>
 
     <string name="message_success">Cadastro realizado com sucesso</string>
+    <string name="message_success_resend">Reenvio realizado com sucesso</string>
 
     <!-- preferences -->
     <string name="title_scheduled_deliveries">Entregas Previstas</string>
