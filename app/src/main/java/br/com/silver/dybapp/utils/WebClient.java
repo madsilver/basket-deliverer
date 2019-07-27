@@ -6,6 +6,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import br.com.silver.dybapp.R;
 import br.com.silver.dybapp.domain.Delivery;
 import okhttp3.MediaType;
@@ -28,7 +35,7 @@ public class WebClient {
     }
 
     public String post(Delivery delivery) {
-        if(url == "") {
+        if(url.equals("")) {
             return "Configure o endereço do servidor";
         }
 
@@ -41,6 +48,38 @@ public class WebClient {
         try {
             Response response = client.newCall(request).execute();
             return response.body().string();
+        }
+        catch(Exception e) {
+            Log.d("ERROR", e.getMessage());
+            return e.getMessage();
+        }
+
+    }
+
+    public String postAll(ArrayList<String> deliveries) {
+        if(url.equals("")) {
+            return "Configure o endereço do servidor";
+        }
+
+        HashMap<String, ArrayList<String>> map = new HashMap<>();
+        map.put("deliveries", deliveries);
+
+        Gson gson = new Gson();
+        String jsonDeliveries = gson.toJson(map);
+
+        RequestBody body = RequestBody.create(JSON, jsonDeliveries);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if(response.body() != null) {
+                return response.body().string();
+            }
+
+            return "";
         }
         catch(Exception e) {
             Log.d("ERROR", e.getMessage());
