@@ -20,5 +20,11 @@ public class RealmMigrations implements RealmMigration {
             schema.get("Counter")
                     .addField("id", int.class);
         }
+
+        if(oldVersion == 3) {
+            schema.get("Delivery")
+                    .addField("imei", String.class);
+        }
+
     }
 }

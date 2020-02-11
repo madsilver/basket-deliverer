@@ -17,6 +17,7 @@ public class Delivery extends RealmObject {
     public static int CHANGED_ADDRESS = 5;
     public static int INCORRECT_ADDRESS = 6;
 
+    private String imei;
     private String code;
     private String date;
     private int status;
@@ -84,10 +85,19 @@ public class Delivery extends RealmObject {
         this.sync = sync;
     }
 
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
+
     @Override
     public String toString() {
         return "{" +
-                "code:" + getCode() +
+                "imei:" + getImei() +
+                ",code:" + getCode() +
                 ",date:" + getDate() +
                 ",status:" + getStatus() +
                 ",status_detail:" + getStatusDetail() +

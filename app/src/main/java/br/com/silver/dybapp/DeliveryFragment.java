@@ -1,6 +1,8 @@
 package br.com.silver.dybapp;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,20 +11,19 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.IntDef;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.telephony.TelephonyManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,12 +55,14 @@ public class DeliveryFragment extends Fragment {
     RadioGroup rgNotDelivered;
 
     private Double lat, lng;
-
+    private String imei;
     private boolean statusDelivery;
+    private static final int REQUEST_CODE = 101;
 
     public DeliveryFragment() {
         this.lat = 0.0;
         this.lng = 0.0;
+        this.imei = "";
     }
 
     public static DeliveryFragment newInstance(String code) {
@@ -79,6 +82,7 @@ public class DeliveryFragment extends Fragment {
         cardDelivered.setVisibility(View.INVISIBLE);
         cardNotDelivered.setVisibility(View.INVISIBLE);
 
+        getImei();
         getGPS();
     }
 
@@ -123,6 +127,18 @@ public class DeliveryFragment extends Fragment {
         }
     }
 
+    private void getImei() {
+        TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE);
+            showMessage("Não foi possível obter o IMEI");
+            return;
+        }
+
+        this.imei = tm.getDeviceId();
+    }
+
     @OnClick({R.id.btnSuccess})
     public void showCardDelivered(View v) {
         statusDelivery = true;
@@ -144,6 +160,7 @@ public class DeliveryFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Delivery delivery = new Delivery();
+        delivery.setImei(this.imei);
         delivery.setCode(code);
         delivery.setLat(String.valueOf(this.lat));
         delivery.setLng(String.valueOf(this.lng));
@@ -189,11 +206,12 @@ public class DeliveryFragment extends Fragment {
         transaction.commit();
     }
 
-    public void showMessage(CharSequence text ) {
+    private void showMessage(CharSequence text) {
         Context context = getContext();
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
+        toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
     }
 
