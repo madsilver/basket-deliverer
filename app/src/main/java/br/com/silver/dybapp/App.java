@@ -15,7 +15,7 @@ public class App extends Application {
 
         final RealmConfiguration configuration = new RealmConfiguration.Builder()
                 .name("silver.realm")
-                .schemaVersion(3)
+                .schemaVersion(4)
                 .migration(new RealmMigrations())
                 .build();
         Realm.setDefaultConfiguration(configuration);
