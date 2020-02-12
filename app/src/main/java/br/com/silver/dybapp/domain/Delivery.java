@@ -96,13 +96,13 @@ public class Delivery extends RealmObject {
     @Override
     public String toString() {
         return "{" +
-                "imei:" + getImei() +
-                ",code:" + getCode() +
-                ",date:" + getDate() +
-                ",status:" + getStatus() +
-                ",status_detail:" + getStatusDetail() +
-                ",lat:" + getLat() +
-                ",lng:" + getLng() +
+                "\"imei\":\"" + getImei() + "\"" +
+                ",\"code\":\"" + getCode() + "\"" +
+                ",\"date\":\"" + getDate() + "\"" +
+                ",\"status\":" + getStatus() +
+                ",\"status_detail\":" + getStatusDetail() +
+                ",\"lat\":\"" + getLat() + "\"" +
+                ",\"lng\":\"" + getLng() + "\"" +
                 "}";
     }
 
